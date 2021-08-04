@@ -5,8 +5,8 @@
 
 
 # Useful function in Pandas Package
-
-#### .head()
+&emsp;
+### .head()
 &emsp;
 Let’s take a look at the top five rows using the DataFrame’s head() method. We can see the first five samples.
 
@@ -101,8 +101,9 @@ housing.head()
 </table>
 </div>
 
+
 &emsp;
-#### .info()
+### .info()
 &emsp;
 The info() method is useful to get a quick description of the data, in particular the total number of rows, and each attribute’s type and number of non-null values.
 &emsp;
