@@ -6,10 +6,9 @@
 
 # Useful function in Pandas Package
 
-&nbsp;
 #### .head()
 
-
+&nbsp;
 Let’s take a look at the top five rows using the DataFrame’s head() method. We can see the first five samples.
 
 ```python
