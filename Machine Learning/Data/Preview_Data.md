@@ -8,7 +8,7 @@
 &nbsp;
 #### .head()
 &emsp;
-Let’s take a look at the top five rows using the DataFrame’s head() method. We can see the first five samples.
+Let’s take a look at the top five rows using the DataFrame’s ''head()'' method. We can see the first five samples.
 
 ```python
 housing = load_housing_data()
