@@ -5,7 +5,8 @@
 
 
 # Useful function in Pandas Package
-&emsp;
+
+&nbsp;
 ### .head()
 &emsp;
 Let’s take a look at the top five rows using the DataFrame’s head() method. We can see the first five samples.
@@ -137,8 +138,8 @@ housing.info()
 
 
 &emsp;
-#### .value_counts()
-&emsp;
+### .value_counts()
+&bnsp;
 
 You can find out what cate‐ gories exist and how many districts belong to each category by using the value_counts() method:
 
