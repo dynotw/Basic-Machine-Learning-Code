@@ -5,7 +5,6 @@
 
 
 # Useful function in Pandas Package
-
 &nbsp;
 #### .head()
 &emsp;
@@ -108,7 +107,6 @@ housing.head()
 &emsp;
 The info() method is useful to get a quick description of the data, in particular the total number of rows, and each attribute’s type and number of non-null values.
 &emsp;
-
 **Notice that the total_bed rooms attribute has only 20,433 non-null values, meaning that 207 districts are miss‐ ing this feature. We will need to take care of this later.**
 
 
@@ -138,12 +136,11 @@ housing.info()
 &nbsp;
 #### .value_counts()
 &emsp;
-You can find out what cate‐ gories exist and how many districts belong to each category by using the value_counts() method:
+You can find out what categories exist, and how many districts belong to each category by using the value_counts() method:
 
 ```python
 housing["ocean_proximity"].value_counts()
 ```
-
 
 
 
@@ -155,6 +152,9 @@ housing["ocean_proximity"].value_counts()
     Name: ocean_proximity, dtype: int64
 
 
+&nbsp;
+#### .describe()
+&emsp;
 The describe() method shows a summary of the numerical attributes. The count, mean, min, and max rows are self-explanatory. Note that the null values are ignored (so, for example, count of total_bedrooms is 20,433, not 20,640)
 
 ```python
@@ -162,22 +162,6 @@ housing.describe()
 ```
 
 
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -295,6 +279,11 @@ housing.describe()
 </div>
 
 
+
+&nbsp;
+#### .hist()
+&emsp;
+Another quick way to get a feel of the type of data you are dealing with is to plot a histogram for each numerical attribute. A histogram shows the number of instances (on the vertical axis) that have a given value range (on the horizontal axis). You can either plot this one attribute at a time, or you can call the '''.hist()''' method on the whole dataset, and it will plot a histogram for each numerical attribute
 
 
 ```python
