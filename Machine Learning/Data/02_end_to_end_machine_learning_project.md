@@ -1,94 +1,12 @@
-**Chapter 2 – End-to-end Machine Learning project**
+# Data Preview 
 
-*Welcome to Machine Learning Housing Corp.! Your task is to predict median house values in Californian districts, given a number of features from these districts.*
+**Once we get our data, we can preview data firstly to have a big picture of our data, which is helpful for the following steps.**
+**Assuming that our data is stored in pandas Dataframe format, and the following code is based on it.**
 
-*This notebook contains all the sample code and solutions to the exercices in chapter 2.*
-
-<table align="left">
-  <td>
-    <a href="https://colab.research.google.com/github/ageron/handson-ml2/blob/master/02_end_to_end_machine_learning_project.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-  </td>
-  <td>
-    <a target="_blank" href="https://kaggle.com/kernels/welcome?src=https://github.com/ageron/handson-ml2/blob/master/02_end_to_end_machine_learning_project.ipynb"><img src="https://kaggle.com/static/images/open-in-kaggle.svg" /></a>
-  </td>
-</table>
-
-# Setup
-
-First, let's import a few common modules, ensure MatplotLib plots figures inline and prepare a function to save the figures. We also check that Python 3.5 or later is installed (although Python 2.x may work, it is deprecated so we strongly recommend you use Python 3 instead), as well as Scikit-Learn ≥0.20.
-
-
-```python
-# Python ≥3.5 is required
-import sys
-assert sys.version_info >= (3, 5)
-
-# Scikit-Learn ≥0.20 is required
-import sklearn
-assert sklearn.__version__ >= "0.20"
-
-# Common imports
-import numpy as np
-import os
-
-# To plot pretty figures
-%matplotlib inline
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-mpl.rc('axes', labelsize=14)
-mpl.rc('xtick', labelsize=12)
-mpl.rc('ytick', labelsize=12)
-
-# Where to save the figures
-PROJECT_ROOT_DIR = "."
-CHAPTER_ID = "end_to_end_project"
-IMAGES_PATH = os.path.join(PROJECT_ROOT_DIR, "images", CHAPTER_ID)
-os.makedirs(IMAGES_PATH, exist_ok=True)
-
-def save_fig(fig_id, tight_layout=True, fig_extension="png", resolution=300):
-    path = os.path.join(IMAGES_PATH, fig_id + "." + fig_extension)
-    print("Saving figure", fig_id)
-    if tight_layout:
-        plt.tight_layout()
-    plt.savefig(path, format=fig_extension, dpi=resolution)
-```
 
 # Get the data
 
-
-```python
-import os
-import tarfile
-import urllib.request
-
-DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml2/master/"
-HOUSING_PATH = os.path.join("datasets", "housing")
-HOUSING_URL = DOWNLOAD_ROOT + "datasets/housing/housing.tgz"
-
-def fetch_housing_data(housing_url=HOUSING_URL, housing_path=HOUSING_PATH):
-    if not os.path.isdir(housing_path):
-        os.makedirs(housing_path)
-    tgz_path = os.path.join(housing_path, "housing.tgz")
-    urllib.request.urlretrieve(housing_url, tgz_path)
-    housing_tgz = tarfile.open(tgz_path)
-    housing_tgz.extractall(path=housing_path)
-    housing_tgz.close()
-```
-
-
-```python
-fetch_housing_data()
-```
-
-
-```python
-import pandas as pd
-
-def load_housing_data(housing_path=HOUSING_PATH):
-    csv_path = os.path.join(housing_path, "housing.csv")
-    return pd.read_csv(csv_path)
-```
-
+Let’s take a look at the top five rows using the DataFrame’s head() method
 
 ```python
 housing = load_housing_data()
@@ -96,22 +14,6 @@ housing.head()
 ```
 
 
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
