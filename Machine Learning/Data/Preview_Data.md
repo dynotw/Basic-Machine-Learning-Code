@@ -135,12 +135,9 @@ housing.info()
     memory usage: 1.6+ MB
 
 
-
-
 &emsp;
 ### .value_counts()
-&nbsp;
-
+&emsp;
 You can find out what cate‐ gories exist and how many districts belong to each category by using the value_counts() method:
 
 ```python
