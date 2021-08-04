@@ -318,79 +318,12 @@ housing.plot(kind="scatter", x="longitude", y="latitude", alpha=0.4,
 plt.legend()
 ```
 
+
 alpha indicate transparency -> lower alpha, more transparent. We can control alpha to highlight values with high amplitude. 当降低alpha后，每个点的透明度提高，重叠部分的颜色会更深一些。若alpha很高，即各店基本不透明，那么就无法区分重叠部分的密度大小了。The radius of each circle represents the district’s population (option s), and the color represents the price (option c). We will use a predefined color map (option cmap) called jet, which ranges from blue (low values) to red (high prices):
 
     
 ![image](https://github.com/dynotw/Basic-Machine-Learning-Code/blob/main/Machine%20Learning/Data/Preview/02_end_to_end_machine_learning_project_43_1.png)
-    
 
-
-
-```python
-# Download the California image
-images_path = os.path.join(PROJECT_ROOT_DIR, "images", "end_to_end_project")
-os.makedirs(images_path, exist_ok=True)
-DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml2/master/"
-filename = "california.png"
-print("Downloading", filename)
-url = DOWNLOAD_ROOT + "images/end_to_end_project/" + filename
-urllib.request.urlretrieve(url, os.path.join(images_path, filename))
-```
-
-
-    ---------------------------------------------------------------------------
-
-    NameError                                 Traceback (most recent call last)
-
-    /var/folders/5h/8nlly35s0c77l8djfpgthddc0000gn/T/ipykernel_30582/154088554.py in <module>
-          1 # Download the California image
-    ----> 2 images_path = os.path.join(PROJECT_ROOT_DIR, "images", "end_to_end_project")
-          3 os.makedirs(images_path, exist_ok=True)
-          4 DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml2/master/"
-          5 filename = "california.png"
-
-
-    NameError: name 'PROJECT_ROOT_DIR' is not defined
-
-
-
-```python
-import matplotlib.image as mpimg
-california_img=mpimg.imread(os.path.join(images_path, filename))
-ax = housing.plot(kind="scatter", x="longitude", y="latitude", figsize=(10,7),
-                  s=housing['population']/100, label="Population",
-                  c="median_house_value", cmap=plt.get_cmap("jet"),
-                  colorbar=False, alpha=0.4)
-plt.imshow(california_img, extent=[-124.55, -113.80, 32.45, 42.05], alpha=0.5,
-           cmap=plt.get_cmap("jet"))
-plt.ylabel("Latitude", fontsize=14)
-plt.xlabel("Longitude", fontsize=14)
-
-prices = housing["median_house_value"]
-tick_values = np.linspace(prices.min(), prices.max(), 11)
-cbar = plt.colorbar(ticks=tick_values/prices.max())
-cbar.ax.set_yticklabels(["$%dk"%(round(v/1000)) for v in tick_values], fontsize=14)
-cbar.set_label('Median House Value', fontsize=16)
-
-plt.legend(fontsize=16)
-save_fig("california_housing_prices_plot")
-plt.show()
-```
-
-
-    ---------------------------------------------------------------------------
-
-    NameError                                 Traceback (most recent call last)
-
-    /var/folders/5h/8nlly35s0c77l8djfpgthddc0000gn/T/ipykernel_30582/3912764189.py in <module>
-          1 import matplotlib.image as mpimg
-    ----> 2 california_img=mpimg.imread(os.path.join(images_path, filename))
-          3 ax = housing.plot(kind="scatter", x="longitude", y="latitude", figsize=(10,7),
-          4                   s=housing['population']/100, label="Population",
-          5                   c="median_house_value", cmap=plt.get_cmap("jet"),
-
-
-    NameError: name 'images_path' is not defined
 
 
 
