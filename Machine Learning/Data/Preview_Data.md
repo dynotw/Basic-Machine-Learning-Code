@@ -104,7 +104,6 @@ housing.head()
 &emsp;
 #### .info()
 &emsp;
-
 The info() method is useful to get a quick description of the data, in particular the total number of rows, and each attribute’s type and number of non-null values.
 &emsp;
 
