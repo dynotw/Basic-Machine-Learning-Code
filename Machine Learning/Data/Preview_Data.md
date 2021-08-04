@@ -296,7 +296,7 @@ plt.show()
 
 
     
-![image](02_end_to_end_machine_learning_project_13_1.png)
+![image](https://github.com/dynotw/Basic-Machine-Learning-Code/blob/main/Machine%20Learning/Data/Preview/02_end_to_end_machine_learning_project_13_1.png)
     
 
 
