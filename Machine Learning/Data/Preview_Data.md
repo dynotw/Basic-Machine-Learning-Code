@@ -6,6 +6,7 @@
 
 # Useful function in Pandas Package
 
+&nbsp;
 #### .head()
 
 
@@ -102,8 +103,9 @@ housing.head()
 </table>
 </div>
 
+&nbsp;
 
-
+#### .info()
 The info() method is useful to get a quick description of the data, in particular the total number of rows, and each attribute’s type and number of non-null values.
 &nbsp;
 
@@ -134,6 +136,9 @@ housing.info()
 
 
 
+&nbsp;
+
+#### .value_counts()
 
 You can find out what cate‐ gories exist and how many districts belong to each category by using the value_counts() method:
 
