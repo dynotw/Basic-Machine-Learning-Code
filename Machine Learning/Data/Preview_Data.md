@@ -296,7 +296,7 @@ plt.show()
 
 
     
-![png](02_end_to_end_machine_learning_project_13_1.png)
+![image](02_end_to_end_machine_learning_project_13_1.png)
     
 
 
