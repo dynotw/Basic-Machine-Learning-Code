@@ -8,7 +8,7 @@
 &nbsp;
 #### .head()
 &emsp;
-Let’s take a look at the top five rows using the DataFrame’s ``head()`` method. We can see the first five samples.
+Let’s take a look at the top five rows using the DataFrame’s ``.head()`` method. We can see the first five samples.
 
 ```python
 housing = load_housing_data()
@@ -105,7 +105,7 @@ housing.head()
 &nbsp;
 #### .info()
 &emsp;
-The info() method is useful to get a quick description of the data, in particular the total number of rows, and each attribute’s type and number of non-null values.
+The ``.info()`` method is useful to get a quick description of the data, in particular the total number of rows, and each attribute’s type and number of non-null values.
 &emsp;
 **Notice that the total_bed rooms attribute has only 20,433 non-null values, meaning that 207 districts are miss‐ ing this feature. We will need to take care of this later.**
 
@@ -136,7 +136,7 @@ housing.info()
 &nbsp;
 #### .value_counts()
 &emsp;
-You can find out what categories exist, and how many districts belong to each category by using the value_counts() method:
+You can find out what categories exist, and how many districts belong to each category by using the ``.value_counts()`` method:
 
 ```python
 housing["ocean_proximity"].value_counts()
@@ -155,7 +155,7 @@ housing["ocean_proximity"].value_counts()
 &nbsp;
 #### .describe()
 &emsp;
-The describe() method shows a summary of the numerical attributes. The count, mean, min, and max rows are self-explanatory. Note that the null values are ignored (so, for example, count of total_bedrooms is 20,433, not 20,640)
+The ``.describe()`` method shows a summary of the numerical attributes. The count, mean, min, and max rows are self-explanatory. Note that the null values are ignored (so, for example, count of total_bedrooms is 20,433, not 20,640)
 
 ```python
 housing.describe()
@@ -283,7 +283,7 @@ housing.describe()
 &nbsp;
 #### .hist()
 &emsp;
-Another quick way to get a feel of the type of data you are dealing with is to plot a histogram for each numerical attribute. A histogram shows the number of instances (on the vertical axis) that have a given value range (on the horizontal axis). You can either plot this one attribute at a time, or you can call the '''.hist()''' method on the whole dataset, and it will plot a histogram for each numerical attribute
+Another quick way to get a feel of the type of data you are dealing with is to plot a histogram for each numerical attribute. A histogram shows the number of instances (on the vertical axis) that have a given value range (on the horizontal axis). You can either plot this one attribute at a time, or you can call the ``.hist()`` method on the whole dataset, and it will plot a histogram for each numerical attribute.
 
 
 ```python
@@ -295,23 +295,8 @@ plt.show()
 ```
 
 
-    ---------------------------------------------------------------------------
-
-    NameError                                 Traceback (most recent call last)
-
-    /var/folders/5h/8nlly35s0c77l8djfpgthddc0000gn/T/ipykernel_30582/2389246474.py in <module>
-          2 import matplotlib.pyplot as plt
-          3 housing.hist(bins=50, figsize=(20,15))
-    ----> 4 save_fig("attribute_histogram_plots")
-          5 plt.show()
-
-
-    NameError: name 'save_fig' is not defined
-
-
-
     
-![png](02_end_to_end_machine_learning_project_files/02_end_to_end_machine_learning_project_13_1.png)
+![png](/02_end_to_end_machine_learning_project_13_1.png)
     
 
 
