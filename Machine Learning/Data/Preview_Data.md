@@ -4,7 +4,7 @@
 **Assuming that our data is stored in pandas Dataframe format, and the following code is based on it.**
 
 
-# Get the data
+# Useful function in Pandas Package
 
 Let’s take a look at the top five rows using the DataFrame’s head() method. We can see the first five samples.
 
