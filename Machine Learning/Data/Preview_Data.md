@@ -6,13 +6,12 @@
 
 # Get the data
 
-Let’s take a look at the top five rows using the DataFrame’s head() method
+Let’s take a look at the top five rows using the DataFrame’s head() method. We can see the first five samples.
 
 ```python
 housing = load_housing_data()
 housing.head()
 ```
-
 
 <table border="1" class="dataframe">
   <thead>
@@ -102,6 +101,8 @@ housing.head()
 
 
 
+The info() method is useful to get a quick description of the data, in particular the total number of rows, and each attribute’s type and number of non-null values.
+
 
 ```python
 housing.info()
@@ -126,6 +127,7 @@ housing.info()
     memory usage: 1.6+ MB
 
 
+You can find out what cate‐ gories exist and how many districts belong to each category by using the value_counts() method:
 
 ```python
 housing["ocean_proximity"].value_counts()
@@ -142,7 +144,7 @@ housing["ocean_proximity"].value_counts()
     Name: ocean_proximity, dtype: int64
 
 
-
+The describe() method shows a summary of the numerical attributes. The count, mean, min, and max rows are self-explanatory. Note that the null values are ignored (so, for example, count of total_bedrooms is 20,433, not 20,640)
 
 ```python
 housing.describe()
