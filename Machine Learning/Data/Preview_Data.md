@@ -327,7 +327,7 @@ alpha indicate transparency -> lower alpha, more transparent. We can control alp
 
 
 &nbsp;
-#### .hist()
+#### .corr()
 &emsp;
 Since the dataset is **not too large**, you can easily compute the standard correlation coefficient (also called Pearson’s r) between every pair of attributes using the ``.corr()`` method:
 ```python
@@ -410,22 +410,6 @@ housing.describe()
 ```
 
 
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
