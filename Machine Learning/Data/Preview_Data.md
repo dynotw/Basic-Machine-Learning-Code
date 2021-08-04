@@ -103,8 +103,7 @@ housing.head()
 
 The info() method is useful to get a quick description of the data, in particular the total number of rows, and each attribute’s type and number of non-null values.
 
-&nbsp; 
-
+&nbsp;
 **Notice that the total_bed rooms attribute has only 20,433 non-null values, meaning that 207 districts are miss‐ ing this feature. We will need to take care of this later.**
 
 
