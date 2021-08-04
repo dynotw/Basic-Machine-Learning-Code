@@ -139,7 +139,7 @@ housing.info()
 
 &emsp;
 ### .value_counts()
-&bnsp;
+&nbsp;
 
 You can find out what cate‐ gories exist and how many districts belong to each category by using the value_counts() method:
 
