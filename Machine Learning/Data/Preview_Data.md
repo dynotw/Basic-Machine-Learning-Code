@@ -304,7 +304,7 @@ In order to protect original data, we create a copy of data, using ``.copy()``. 
 housing = strat_train_set.copy()
 ```
 
-&nbsp;
+
 #### scatter plot
 &emsp;
 Since there is geographical information (latitude and longitude), it is a good idea to create a scatterplot of all districts to visualize the data. Of course, other kinds of information also can be shown in this way. 只是若x & y是经纬度的话，形成的scatter plot 刚好就是地图性质。
@@ -326,17 +326,19 @@ alpha indicate transparency -> lower alpha, more transparent. We can control alp
 
 
 
-
+&nbsp;
+#### .hist()
+&emsp;
+Since the dataset is **not too large**, you can easily compute the standard correlation coefficient (also called Pearson’s r) between every pair of attributes using the ``.corr()`` method:
 ```python
 corr_matrix = housing.corr()
 ```
 
+Now let’s look at how much each attribute correlates with the median house value:
 
 ```python
 corr_matrix["median_house_value"].sort_values(ascending=False)
 ```
-
-
 
 
     median_house_value    1.000000
@@ -350,39 +352,9 @@ corr_matrix["median_house_value"].sort_values(ascending=False)
     latitude             -0.142724
     Name: median_house_value, dtype: float64
 
+The correlation coefficient ranges from –1 to 1. When it is close to 1, it means that there is a strong positive correlation; for example, the median house value tends to go up when the median income goes up. When the coefficient is close to –1, it means that there is a strong negative correlation; you can see a small negative correlation between the latitude and the median house value (i.e., prices have a slight tendency to go down when you go north). Finally, coefficients close to zero mean that there is no linear correlation.
 
 
-
-```python
-# from pandas.tools.plotting import scatter_matrix # For older versions of Pandas
-from pandas.plotting import scatter_matrix
-
-attributes = ["median_house_value", "median_income", "total_rooms",
-              "housing_median_age"]
-scatter_matrix(housing[attributes], figsize=(12, 8))
-save_fig("scatter_matrix_plot")
-```
-
-
-
-    
-![png](02_end_to_end_machine_learning_project_files/02_end_to_end_machine_learning_project_48_1.png)
-    
-
-
-
-```python
-housing.plot(kind="scatter", x="median_income", y="median_house_value",
-             alpha=0.1)
-plt.axis([0, 16, 0, 550000])
-save_fig("income_vs_house_value_scatterplot")
-```
-
-
-
-
-    
-![png](02_end_to_end_machine_learning_project_files/02_end_to_end_machine_learning_project_49_1.png)
     
 
 
