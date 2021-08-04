@@ -7,7 +7,7 @@
 # Useful function in Pandas Package
 
 &nbsp;
-### .head()
+#### .head()
 &emsp;
 Let’s take a look at the top five rows using the DataFrame’s head() method. We can see the first five samples.
 
@@ -104,7 +104,7 @@ housing.head()
 
 
 &nbsp;
-### .info()
+#### .info()
 &emsp;
 The info() method is useful to get a quick description of the data, in particular the total number of rows, and each attribute’s type and number of non-null values.
 &emsp;
@@ -136,7 +136,7 @@ housing.info()
 
 
 &nbsp;
-### .value_counts()
+#### .value_counts()
 &emsp;
 You can find out what cate‐ gories exist and how many districts belong to each category by using the value_counts() method:
 
