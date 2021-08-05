@@ -45,6 +45,7 @@ housing["income_cat"].hist()
 
 ### Data Cleaning
 
+#### Missing value
 Most Machine Learning algorithms cannot work with missing features, so let’s create a few functions to take care of them. Assume that total_bedrooms attribute has some missing values, so let’s fix this. You have three options: 
 
 * Get rid of the corresponding districts.
@@ -52,14 +53,10 @@ Most Machine Learning algorithms cannot work with missing features, so let’s c
 * Set the values to some value (zero, the mean, the median, etc.).
 
 
-You can accomplish these easily using DataFrame’s dropna(), drop(), and fillna() methods:
+You can accomplish these easily using DataFrame’s ``.dropna()``, ``.drop()``, and ``.fillna()`` methods:
 
 
-```python
-housing = strat_train_set.drop("median_house_value", axis=1) # drop labels for training set
-housing_labels = strat_train_set["median_house_value"].copy()
-```
-
+Have a quick view, which samples, which have missing informations, look like
 
 ```python
 sample_incomplete_rows = housing[housing.isnull().any(axis=1)].head()
@@ -149,6 +146,9 @@ sample_incomplete_rows
 
 
 
+* Method 1, ``.dropna()``
+
+``.dropna()`` is to drop all rows, which have missing information.
 
 ```python
 sample_incomplete_rows.dropna(subset=["total_bedrooms"])    # option 1
@@ -176,28 +176,15 @@ sample_incomplete_rows.dropna(subset=["total_bedrooms"])    # option 1
 
 
 
+* Method 2, ``.drop()``
+
+``.drop()`` is to drop the column, according to the column names.
 
 ```python
 sample_incomplete_rows.drop("total_bedrooms", axis=1)       # option 2
 ```
 
 
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -273,35 +260,17 @@ sample_incomplete_rows.drop("total_bedrooms", axis=1)       # option 2
 </div>
 
 
+* Method 3, ``.fillna()``
 
+``.fillna()`` is totally different from the above two methods. ``.fillna()`` is to fill the missing information, rather than drop them. **sklearn provides a more powerful class ``SimpleImputer`` to deal with missing values
 
 ```python
-median = housing["total_bedrooms"].median()
+median = housing["total_bedrooms"].median() # Use median value to fill those missing data
 sample_incomplete_rows["total_bedrooms"].fillna(median, inplace=True) # option 3
-```
-
-
-```python
 sample_incomplete_rows
 ```
 
 
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -383,11 +352,11 @@ sample_incomplete_rows
 </div>
 
 
-
+* Method 4, ``sklearn.impute.SimpleImputer``
 
 ```python
 from sklearn.impute import SimpleImputer
-imputer = SimpleImputer(strategy="median")
+imputer = SimpleImputer(strategy="median") # Choose median to fill missing value
 ```
 
 Remove the text attribute because median can only be calculated on numerical attributes:
@@ -398,81 +367,44 @@ housing_num = housing.drop("ocean_proximity", axis=1)
 # alternatively: housing_num = housing.select_dtypes(include=[np.number])
 ```
 
-
 ```python
-imputer.fit(housing_num)
-```
-
-
-
-
-    SimpleImputer(strategy='median')
-
-
-
-
-```python
+imputer.fit(housing_num) 
+# On the training set, we usually use ``.fit_transform()``, which is equivalent to calling fit() and then transform() (but sometimes fit_transform() is optimized and runs much faster). ** On valdation & test set, we only use ``.transform()``, because we want transform on validation & test set is exactly same as training set. 
 imputer.statistics_
 ```
-
-
-
 
     array([-118.51  ,   34.26  ,   29.    , 2119.5   ,  433.    , 1164.    ,
             408.    ,    3.5409])
 
 
 
-Check that this is the same as manually computing the median of each attribute:
+Check whether is the median gotten from SimpleImputer is same as manually computing the median of each attribute:
 
 
 ```python
 housing_num.median().values
 ```
 
-
-
-
     array([-118.51  ,   34.26  ,   29.    , 2119.5   ,  433.    , 1164.    ,
             408.    ,    3.5409])
-
 
 
 Transform the training set:
 
 
 ```python
+# use this “trained” imputer to transform the training set by replacing missing values by the learned medians:
 X = imputer.transform(housing_num)
-```
 
-
-```python
+# The X is a plain NumPy array, so we may need to put it back into a Pandas Dataframe
 housing_tr = pd.DataFrame(X, columns=housing_num.columns,
                           index=housing.index)
-```
-
-
-```python
+                          
+# Let's check whether missing value has been filled
 housing_tr.loc[sample_incomplete_rows.index.values]
 ```
 
 
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -548,118 +480,4 @@ housing_tr.loc[sample_incomplete_rows.index.values]
 </div>
 
 
-
-
-```python
-imputer.strategy
-```
-
-
-
-
-    'median'
-
-
-
-
-```python
-housing_tr = pd.DataFrame(X, columns=housing_num.columns,
-                          index=housing_num.index)
-```
-
-
-```python
-housing_tr.head()
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>longitude</th>
-      <th>latitude</th>
-      <th>housing_median_age</th>
-      <th>total_rooms</th>
-      <th>total_bedrooms</th>
-      <th>population</th>
-      <th>households</th>
-      <th>median_income</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>17606</th>
-      <td>-121.89</td>
-      <td>37.29</td>
-      <td>38.0</td>
-      <td>1568.0</td>
-      <td>351.0</td>
-      <td>710.0</td>
-      <td>339.0</td>
-      <td>2.7042</td>
-    </tr>
-    <tr>
-      <th>18632</th>
-      <td>-121.93</td>
-      <td>37.05</td>
-      <td>14.0</td>
-      <td>679.0</td>
-      <td>108.0</td>
-      <td>306.0</td>
-      <td>113.0</td>
-      <td>6.4214</td>
-    </tr>
-    <tr>
-      <th>14650</th>
-      <td>-117.20</td>
-      <td>32.77</td>
-      <td>31.0</td>
-      <td>1952.0</td>
-      <td>471.0</td>
-      <td>936.0</td>
-      <td>462.0</td>
-      <td>2.8621</td>
-    </tr>
-    <tr>
-      <th>3230</th>
-      <td>-119.61</td>
-      <td>36.31</td>
-      <td>25.0</td>
-      <td>1847.0</td>
-      <td>371.0</td>
-      <td>1460.0</td>
-      <td>353.0</td>
-      <td>1.8839</td>
-    </tr>
-    <tr>
-      <th>3555</th>
-      <td>-118.59</td>
-      <td>34.23</td>
-      <td>17.0</td>
-      <td>6592.0</td>
-      <td>1525.0</td>
-      <td>4459.0</td>
-      <td>1463.0</td>
-      <td>3.0347</td>
-    </tr>
-  </tbody>
-</table>
-</div>
 
