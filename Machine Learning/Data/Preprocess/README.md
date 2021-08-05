@@ -143,6 +143,7 @@ sample_incomplete_rows
 
 
 
+&nbsp;
 * Method 1, ``.dropna()``
 
 ``.dropna()`` is to drop all rows, which have missing information.
@@ -366,6 +367,9 @@ housing_num = housing.drop("ocean_proximity", axis=1)
 # alternatively: housing_num = housing.select_dtypes(include=[np.number])
 ```
 
+
+Now you can fit the imputer instance to the training data using the fit() method:
+
 ```python
 imputer.fit(housing_num) 
 # On the training set, we usually use ``.fit_transform()``, which is equivalent to calling fit() and then transform() (but sometimes fit_transform() is optimized and runs much faster). 
@@ -481,4 +485,344 @@ housing_tr.loc[sample_incomplete_rows.index.values]
 </div>
 
 
+#### Deal with Text & Categorical Atributes (Discrete / Sparse)
 
+In our dataset, there is a feature, named `ocean_proximity`, which is a text feature. We know machine learning model can't learn text information, so we need to transfrom them into numerical information. In `` sklearn``, we have two classes, ``sklearn.preprocessing.OrdinalEncoder`` & ``sklearn.preprocessing.OneHotEncoder``
+
+&nbsp;
+* Method 1, ``sklearn.preprocessing.OrdinalEncoder``
+
+This method is useful in features, whose number of unique value is small. 他的本质就是用数字去表示每一种text value，即将text value 转变成 numerical value。
+
+```python
+# Pick up the columns, which is text information
+housing_cat = housing[["ocean_proximity"]]
+housing_cat.head(10)
+```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ocean_proximity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>17606</th>
+      <td>&lt;1H OCEAN</td>
+    </tr>
+    <tr>
+      <th>18632</th>
+      <td>&lt;1H OCEAN</td>
+    </tr>
+    <tr>
+      <th>14650</th>
+      <td>NEAR OCEAN</td>
+    </tr>
+    <tr>
+      <th>3230</th>
+      <td>INLAND</td>
+    </tr>
+    <tr>
+      <th>3555</th>
+      <td>&lt;1H OCEAN</td>
+    </tr>
+    <tr>
+      <th>19480</th>
+      <td>INLAND</td>
+    </tr>
+    <tr>
+      <th>8879</th>
+      <td>&lt;1H OCEAN</td>
+    </tr>
+    <tr>
+      <th>13685</th>
+      <td>INLAND</td>
+    </tr>
+    <tr>
+      <th>4937</th>
+      <td>&lt;1H OCEAN</td>
+    </tr>
+    <tr>
+      <th>4861</th>
+      <td>&lt;1H OCEAN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+```python
+from sklearn.preprocessing import OrdinalEncoder
+
+ordinal_encoder = OrdinalEncoder()
+housing_cat_encoded = ordinal_encoder.fit_transform(housing_cat)
+housing_cat_encoded[:10]
+```
+
+    array([[0.],
+           [0.],
+           [4.],
+           [1.],
+           [0.],
+           [1.],
+           [0.],
+           [1.],
+           [0.],
+           [0.]])
+
+
+You can get the list of categories using the ``.categories_`` instance variable. It is a list containing a 1D array of categories for each categorical attribute (in this case, a list containing a single array since there is just one categorical attribute). 这个categories是按照顺序的，0 -> '<1H OCEAN'; 1 -> 'INLAND'; 2 -> 'ISLAND' and so on.
+
+```python
+ordinal_encoder.categories_
+```
+
+    [array(['<1H OCEAN', 'INLAND', 'ISLAND', 'NEAR BAY', 'NEAR OCEAN'],
+           dtype=object)]
+
+
+
+```python
+from sklearn.preprocessing import OneHotEncoder
+
+cat_encoder = OneHotEncoder()
+housing_cat_1hot = cat_encoder.fit_transform(housing_cat)
+housing_cat_1hot
+```
+
+
+
+
+    <16512x5 sparse matrix of type '<class 'numpy.float64'>'
+    	with 16512 stored elements in Compressed Sparse Row format>
+
+
+
+By default, the `OneHotEncoder` class returns a sparse array, but we can convert it to a dense array if needed by calling the `toarray()` method:
+
+
+```python
+housing_cat_1hot.toarray()
+```
+
+
+
+
+    array([[1., 0., 0., 0., 0.],
+           [1., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 1.],
+           ...,
+           [0., 1., 0., 0., 0.],
+           [1., 0., 0., 0., 0.],
+           [0., 0., 0., 1., 0.]])
+
+
+
+Alternatively, you can set `sparse=False` when creating the `OneHotEncoder`:
+
+
+```python
+cat_encoder = OneHotEncoder(sparse=False)
+housing_cat_1hot = cat_encoder.fit_transform(housing_cat)
+housing_cat_1hot
+```
+
+
+
+
+    array([[1., 0., 0., 0., 0.],
+           [1., 0., 0., 0., 0.],
+           [0., 0., 0., 0., 1.],
+           ...,
+           [0., 1., 0., 0., 0.],
+           [1., 0., 0., 0., 0.],
+           [0., 0., 0., 1., 0.]])
+
+
+
+
+```python
+cat_encoder.categories_
+```
+
+
+
+
+    [array(['<1H OCEAN', 'INLAND', 'ISLAND', 'NEAR BAY', 'NEAR OCEAN'],
+           dtype=object)]
+
+
+
+Let's create a custom transformer to add extra attributes:
+
+
+```python
+from sklearn.base import BaseEstimator, TransformerMixin
+
+# column index
+rooms_ix, bedrooms_ix, population_ix, households_ix = 3, 4, 5, 6
+
+class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
+    def __init__(self, add_bedrooms_per_room=True): # no *args or **kargs
+        self.add_bedrooms_per_room = add_bedrooms_per_room
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    def transform(self, X):
+        rooms_per_household = X[:, rooms_ix] / X[:, households_ix]
+        population_per_household = X[:, population_ix] / X[:, households_ix]
+        if self.add_bedrooms_per_room:
+            bedrooms_per_room = X[:, bedrooms_ix] / X[:, rooms_ix]
+            return np.c_[X, rooms_per_household, population_per_household,
+                         bedrooms_per_room]
+        else:
+            return np.c_[X, rooms_per_household, population_per_household]
+
+attr_adder = CombinedAttributesAdder(add_bedrooms_per_room=False)
+housing_extra_attribs = attr_adder.transform(housing.values)
+```
+
+Note that I hard coded the indices (3, 4, 5, 6) for concision and clarity in the book, but it would be much cleaner to get them dynamically, like this:
+
+
+```python
+col_names = "total_rooms", "total_bedrooms", "population", "households"
+rooms_ix, bedrooms_ix, population_ix, households_ix = [
+    housing.columns.get_loc(c) for c in col_names] # get the column indices
+```
+
+Also, `housing_extra_attribs` is a NumPy array, we've lost the column names (unfortunately, that's a problem with Scikit-Learn). To recover a `DataFrame`, you could run this:
+
+
+```python
+housing_extra_attribs = pd.DataFrame(
+    housing_extra_attribs,
+    columns=list(housing.columns)+["rooms_per_household", "population_per_household"],
+    index=housing.index)
+housing_extra_attribs.head()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>longitude</th>
+      <th>latitude</th>
+      <th>housing_median_age</th>
+      <th>total_rooms</th>
+      <th>total_bedrooms</th>
+      <th>population</th>
+      <th>households</th>
+      <th>median_income</th>
+      <th>ocean_proximity</th>
+      <th>rooms_per_household</th>
+      <th>population_per_household</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>17606</th>
+      <td>-121.89</td>
+      <td>37.29</td>
+      <td>38.0</td>
+      <td>1568.0</td>
+      <td>351.0</td>
+      <td>710.0</td>
+      <td>339.0</td>
+      <td>2.7042</td>
+      <td>&lt;1H OCEAN</td>
+      <td>4.625369</td>
+      <td>2.094395</td>
+    </tr>
+    <tr>
+      <th>18632</th>
+      <td>-121.93</td>
+      <td>37.05</td>
+      <td>14.0</td>
+      <td>679.0</td>
+      <td>108.0</td>
+      <td>306.0</td>
+      <td>113.0</td>
+      <td>6.4214</td>
+      <td>&lt;1H OCEAN</td>
+      <td>6.00885</td>
+      <td>2.707965</td>
+    </tr>
+    <tr>
+      <th>14650</th>
+      <td>-117.2</td>
+      <td>32.77</td>
+      <td>31.0</td>
+      <td>1952.0</td>
+      <td>471.0</td>
+      <td>936.0</td>
+      <td>462.0</td>
+      <td>2.8621</td>
+      <td>NEAR OCEAN</td>
+      <td>4.225108</td>
+      <td>2.025974</td>
+    </tr>
+    <tr>
+      <th>3230</th>
+      <td>-119.61</td>
+      <td>36.31</td>
+      <td>25.0</td>
+      <td>1847.0</td>
+      <td>371.0</td>
+      <td>1460.0</td>
+      <td>353.0</td>
+      <td>1.8839</td>
+      <td>INLAND</td>
+      <td>5.232295</td>
+      <td>4.135977</td>
+    </tr>
+    <tr>
+      <th>3555</th>
+      <td>-118.59</td>
+      <td>34.23</td>
+      <td>17.0</td>
+      <td>6592.0</td>
+      <td>1525.0</td>
+      <td>4459.0</td>
+      <td>1463.0</td>
+      <td>3.0347</td>
+      <td>&lt;1H OCEAN</td>
+      <td>4.50581</td>
+      <td>3.047847</td>
+    </tr>
+  </tbody>
+</table>
+</div>
