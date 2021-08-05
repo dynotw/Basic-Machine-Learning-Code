@@ -18,10 +18,7 @@ category 2 from 1.5 to 3, and so on
 housing["income_cat"] = pd.cut(housing["median_income"],
                                bins=[0., 1.5, 3.0, 4.5, 6., np.inf],
                                labels=[1, 2, 3, 4, 5])
-```
-
-
-```python
+                               
 housing["income_cat"].value_counts()
 ```
 
@@ -175,7 +172,7 @@ sample_incomplete_rows.dropna(subset=["total_bedrooms"])    # option 1
 </div>
 
 
-
+&nbsp;
 * Method 2, ``.drop()``
 
 ``.drop()`` is to drop the column, according to the column names.
@@ -260,6 +257,7 @@ sample_incomplete_rows.drop("total_bedrooms", axis=1)       # option 2
 </div>
 
 
+&nbsp;
 * Method 3, ``.fillna()``
 
 ``.fillna()`` is totally different from the above two methods. ``.fillna()`` is to fill the missing information, rather than drop them. **sklearn provides a more powerful class ``SimpleImputer`` to deal with missing values
@@ -352,6 +350,7 @@ sample_incomplete_rows
 </div>
 
 
+&nbsp;
 * Method 4, ``sklearn.impute.SimpleImputer``
 
 ```python
@@ -369,7 +368,9 @@ housing_num = housing.drop("ocean_proximity", axis=1)
 
 ```python
 imputer.fit(housing_num) 
-# On the training set, we usually use ``.fit_transform()``, which is equivalent to calling fit() and then transform() (but sometimes fit_transform() is optimized and runs much faster). ** On valdation & test set, we only use ``.transform()``, because we want transform on validation & test set is exactly same as training set. 
+# On the training set, we usually use ``.fit_transform()``, which is equivalent to calling fit() and then transform() (but sometimes fit_transform() is optimized and runs much faster). 
+# On valdation & test set, we only use ``.transform()``, because we want transform on validation & test set is exactly same as training set.
+
 imputer.statistics_
 ```
 
