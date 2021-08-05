@@ -1,4 +1,4 @@
-# Data Precessing
+## Data Precessing
 
 **Once we know our data briefly, we can preprocess our data, which may fast our training, improve model performance and so on**
 **Assuming that our data is stored in pandas Dataframe format, and the following code is based on it.**
@@ -381,19 +381,6 @@ imputer.statistics_
     array([-118.51  ,   34.26  ,   29.    , 2119.5   ,  433.    , 1164.    ,
             408.    ,    3.5409])
 
-
-
-Check whether is the median gotten from SimpleImputer is same as manually computing the median of each attribute:
-
-
-```python
-housing_num.median().values
-```
-
-    array([-118.51  ,   34.26  ,   29.    , 2119.5   ,  433.    , 1164.    ,
-            408.    ,    3.5409])
-
-
 Transform the training set:
 
 
@@ -485,7 +472,8 @@ housing_tr.loc[sample_incomplete_rows.index.values]
 </div>
 
 
-#### Deal with Text & Categorical Atributes (Discrete / Sparse)
+&emsp;
+### Deal with Text & Categorical Atributes (Discrete / Sparse)
 
 In our dataset, there is a feature, named `ocean_proximity`, which is a text feature. We know machine learning model can't learn text information, so we need to transfrom them into numerical information. In `` scikit-learn``, we have two classes, ``sklearn.preprocessing.OrdinalEncoder`` & ``sklearn.preprocessing.OneHotEncoder``
 
@@ -622,23 +610,9 @@ housing_cat_1hot.toarray()
 
 
 
-Alternatively, you can set `sparse=False` when creating the `OneHotEncoder`:
+Alternatively, you can set `sparse=False` when creating the `OneHotEncoder`: ``cat_encoder = OneHotEncoder(sparse=False)``
 
 
-```python
-cat_encoder = OneHotEncoder(sparse=False)
-housing_cat_1hot = cat_encoder.fit_transform(housing_cat)
-housing_cat_1hot
-```
-
-
-    array([[1., 0., 0., 0., 0.],
-           [1., 0., 0., 0., 0.],
-           [0., 0., 0., 0., 1.],
-           ...,
-           [0., 1., 0., 0., 0.],
-           [1., 0., 0., 0., 0.],
-           [0., 0., 0., 1., 0.]])
 
 Once again, you can get the list of categories using the encoder’s ``categories_`` instance variable:
 
