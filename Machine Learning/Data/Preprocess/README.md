@@ -627,7 +627,9 @@ cat_encoder.categories_
 
 
 
+### Custom Transformer
 
+Although Scikit-Learn provides many useful transformers, we also can write our own custom transformers for cleanup operations or combining specific attributes. All you need is to create a class and implement three methods: fit() (returning self), transform(), and fit_transform(). You can get the last one for free by simply adding TransformerMixin as a base class. Also, if you add BaseEstimator as a base class (and avoid *args and \**kargs in your constructor) you will get two extra methods (get_params() and set_params()) that will be useful for automatic hyperparameter tuning.
 
 Let's create a custom transformer to add extra attributes:
 
