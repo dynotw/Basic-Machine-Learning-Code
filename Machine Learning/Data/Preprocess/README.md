@@ -487,7 +487,7 @@ housing_tr.loc[sample_incomplete_rows.index.values]
 
 #### Deal with Text & Categorical Atributes (Discrete / Sparse)
 
-In our dataset, there is a feature, named `ocean_proximity`, which is a text feature. We know machine learning model can't learn text information, so we need to transfrom them into numerical information. In `` sklearn``, we have two classes, ``sklearn.preprocessing.OrdinalEncoder`` & ``sklearn.preprocessing.OneHotEncoder``
+In our dataset, there is a feature, named `ocean_proximity`, which is a text feature. We know machine learning model can't learn text information, so we need to transfrom them into numerical information. In `` scikit-learn``, we have two classes, ``sklearn.preprocessing.OrdinalEncoder`` & ``sklearn.preprocessing.OneHotEncoder``
 
 &nbsp;
 * Method 1, ``sklearn.preprocessing.OrdinalEncoder``
@@ -500,20 +500,7 @@ housing_cat = housing[["ocean_proximity"]]
 housing_cat.head(10)
 ```
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -598,6 +585,12 @@ ordinal_encoder.categories_
            dtype=object)]
 
 
+``OrdinalEncoder`` has one problem that ML algorithms will assume that two nearby values are more similar than two distant values. (0 is similar to 1, not 2) This may be fine in some cases (e.g., for ordered categories such as “bad”, “average”, “good”, “excellent”), but it is obviously not the case for the ocean_proximity column. For example, categories 0, (<1H OCEAN) and 4, (NEAR OCEAN) are clearly more similar than categories 0, (<1H OCEAN) and 1, (INLAND).
+** To solve this problem, we can use another scikit-learn class, named OneHotEncoder**
+
+
+&nbsp;
+* Method 2, ``sklearn.preprocessing.OneHotEncoder``
 
 ```python
 from sklearn.preprocessing import OneHotEncoder
@@ -607,22 +600,16 @@ housing_cat_1hot = cat_encoder.fit_transform(housing_cat)
 housing_cat_1hot
 ```
 
-
-
-
     <16512x5 sparse matrix of type '<class 'numpy.float64'>'
     	with 16512 stored elements in Compressed Sparse Row format>
 
 
-
-By default, the `OneHotEncoder` class returns a sparse array, but we can convert it to a dense array if needed by calling the `toarray()` method:
+By default, the `OneHotEncoder` class returns a SciPy sparse matrix, but we can convert it to a Numpy array if needed by calling the `toarray()` method:
 
 
 ```python
 housing_cat_1hot.toarray()
 ```
-
-
 
 
     array([[1., 0., 0., 0., 0.],
@@ -645,8 +632,6 @@ housing_cat_1hot
 ```
 
 
-
-
     array([[1., 0., 0., 0., 0.],
            [1., 0., 0., 0., 0.],
            [0., 0., 0., 0., 1.],
@@ -655,18 +640,18 @@ housing_cat_1hot
            [1., 0., 0., 0., 0.],
            [0., 0., 0., 1., 0.]])
 
-
-
+Once again, you can get the list of categories using the encoder’s ``categories_`` instance variable:
 
 ```python
 cat_encoder.categories_
 ```
 
 
-
-
     [array(['<1H OCEAN', 'INLAND', 'ISLAND', 'NEAR BAY', 'NEAR OCEAN'],
            dtype=object)]
+
+
+
 
 
 
