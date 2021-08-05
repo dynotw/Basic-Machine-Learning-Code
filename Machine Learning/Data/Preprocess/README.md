@@ -6,7 +6,7 @@
 
 
 ### Transform Continuous Value into Discrete Value
-&nbsp;
+
 #### .cut()
 &emsp;
 We can use the ``pd.cut()`` function to create a new category, 'income_cat', which is dividedan 'median_income' category into 5 groups (labeled from 1 to 5): 
@@ -47,9 +47,11 @@ housing["income_cat"].hist()
 
 Most Machine Learning algorithms cannot work with missing features, so let’s create a few functions to take care of them. Assume that total_bedrooms attribute has some missing values, so let’s fix this. You have three options: 
 
-• Get rid of the corresponding districts.
-• Get rid of the whole attribute.
-• Set the values to some value (zero, the mean, the median, etc.).
+* Get rid of the corresponding districts.
+* Get rid of the whole attribute.
+* Set the values to some value (zero, the mean, the median, etc.).
+
+
 You can accomplish these easily using DataFrame’s dropna(), drop(), and fillna() methods:
 
 
