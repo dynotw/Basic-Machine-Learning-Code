@@ -585,12 +585,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 cat_encoder = OneHotEncoder()
 housing_cat_1hot = cat_encoder.fit_transform(housing_cat)
-housing_cat_1hot
 ```
-
-    <16512x5 sparse matrix of type '<class 'numpy.float64'>'
-    	with 16512 stored elements in Compressed Sparse Row format>
-
 
 By default, the `OneHotEncoder` class returns a SciPy sparse matrix, but we can convert it to a Numpy array if needed by calling the `toarray()` method:
 
