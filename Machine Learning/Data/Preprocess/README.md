@@ -624,7 +624,7 @@ cat_encoder.categories_
 &emsp;
 ### Custom Transform Method
 
-#### Custom own Transformer
+#### 1. Custom own Transformer
 Although Scikit-Learn provides many useful transformers, we also can write our own custom transformers for cleanup operations or combining specific attributes. All you need is to create a class and implement three methods: ``.fit()`` (returning self), ``.transform()``, and ``.fit_transform()``. You can get the last one for free by simply adding ``TransformerMixin`` as a base class. Also, if you add ``BaseEstimator`` as a base class (and avoid ``*args`` and ``**kargs`` in your constructor) you will get two extra methods (``get_params()`` and ``set_params()``) that will be useful for automatic hyperparameter tuning.
 
 
@@ -771,8 +771,8 @@ housing_extra_attribs.head()
 </div>
 
 
-
-#### Custom Transformation Pipeline
+&emsp;
+#### 2. Custom Transformation Pipeline
 
 Sometimes we want to do a series of different transformations on our data orderly, it's very tedious, if we implement these transform one by one. Therefore, we create a Pipeline class instance. **补充：everything is object, even class itself. 类可以是对象，类实例化后的出来的是此类的实例对象。** Then this instance will do these transformation orderly and automatically.
 
@@ -816,7 +816,8 @@ full_pipeline_with_predictor.predict(some_data)
 ```
 
 
-#### Custom Column Transformer
+&emsp;
+#### 3. Custom Column Transformer
 
 Sometimes we need to do different transformation on different features(columns), this time we can use ``ColumnTransformer`` to deal with numerical and text information respectively.
 
