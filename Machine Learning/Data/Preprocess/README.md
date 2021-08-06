@@ -803,6 +803,19 @@ housing_num_tr = num_pipeline.fit_transform(housing_num)
 ```
 
 
+**Notice** We alsoc can put predictor into Pipeline, not only transformer. For example:
+
+```python
+full_pipeline_with_predictor = Pipeline([
+        ("preparation", full_pipeline),
+        ("linear", LinearRegression())
+    ])
+
+full_pipeline_with_predictor.fit(housing, housing_labels)
+full_pipeline_with_predictor.predict(some_data)
+```
+
+
 #### Custom Column Transformer
 
 Sometimes we need to do different transformation on different features(columns), this time we can use ``ColumnTransformer`` to deal with numerical and text information respectively.
