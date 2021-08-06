@@ -621,7 +621,7 @@ cat_encoder.categories_
 
 
 
-
+&emsp;
 ### Custom Transform Method
 
 #### Custom own Transformer
