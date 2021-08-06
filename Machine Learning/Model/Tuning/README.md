@@ -563,4 +563,40 @@ The ``GridSearchCV`` approach is fine when you are exploring relatively few comb
 * You have more control over the computing budget you want to allocate to hyperparameter search, simply by setting the number of iterations.
 
 
+```python
+from sklearn.model_selection import RandomizedSearchCV
+from sklearn.ensemble import RandomForestRegressor
+from scipy.stats import randint
+
+param_distribs = {
+        'n_estimators': randint(low=1, high=200),
+        'max_features': randint(low=1, high=8),
+    }
+
+forest_reg = RandomForestRegressor(random_state=42)
+rnd_search = RandomizedSearchCV(forest_reg, param_distributions=param_distribs,
+                                n_iter=10, cv=5, scoring='neg_mean_squared_error', random_state=42)
+rnd_search.fit(housing_prepared, housing_labels)
+```
+
+
+```python
+cvres = rnd_search.cv_results_
+for mean_score, params in zip(cvres["mean_test_score"], cvres["params"]):
+    print(np.sqrt(-mean_score), params)
+```
+
+    49150.70756927707 {'max_features': 7, 'n_estimators': 180}
+    51389.889203389284 {'max_features': 5, 'n_estimators': 15}
+    50796.155224308866 {'max_features': 3, 'n_estimators': 72}
+    50835.13360315349 {'max_features': 5, 'n_estimators': 21}
+    49280.9449827171 {'max_features': 7, 'n_estimators': 122}
+    50774.90662363929 {'max_features': 3, 'n_estimators': 75}
+    50682.78888164288 {'max_features': 3, 'n_estimators': 88}
+    49608.99608105296 {'max_features': 5, 'n_estimators': 100}
+    50473.61930350219 {'max_features': 3, 'n_estimators': 150}
+    64429.84143294435 {'max_features': 5, 'n_estimators': 2}
+
+
+
 **Conclusion** Few combinations -> ``GridSearchCV``; Many combination -> ``RandomizedSearchCV``
