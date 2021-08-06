@@ -1,7 +1,7 @@
 ### Fine-Tune Model
 
 After we get a good ML algorithm, we usually tune some hyperparameters to improve model's performance. 
-However, it wastes lots of time, if we try different value of hyperparameters manually. Fortunately, scikit-learn provides two class, ``GridSearchCV`` & ``RandomSearchCV`` for us.
+However, it wastes lots of time, if we try different value of hyperparameters manually. Fortunately, scikit-learn provides two class, ``GridSearchCV`` & ``RandomizedSearchCV`` for us.
 These class instance will evaluate all the possible combinations of hyperparameter values, using cross-validation. 
 
 
@@ -11,7 +11,7 @@ These class instance will evaluate all the possible combinations of hyperparamet
 ```python
 from sklearn.model_selection import GridSearchCV
 
-# Set all combinations we want try
+# Set all combinations we want try, Here're 12 + 6 = 18 different combinations totally.
 param_grid = [
     # Group 1: try 12 (3×4) combinations of hyperparameters
     {'n_estimators': [3, 10, 30], 'max_features': [2, 4, 6, 8]},
@@ -551,3 +551,13 @@ pd.DataFrame(grid_search.cv_results_)
 </table>
 <p>18 rows × 23 columns</p>
 </div>
+
+
+
+&nbsp;
+* Class 2: ``RandomizedSearchCV``
+
+The ``GridSearchCV`` approach is fine when you are exploring relatively few combinations, but when the hyperparameter search space is large, it is often preferable to use ``RandomizedSearchCV``. Instead of trying out all possible combinations, it evaluates a given number of random combinations by selecting a random value for each hyperparameter at every iteration. This approach has two main bene‐ fits:
+
+* If you let the randomized search run for, say, 1,000 iterations, this approach will explore 1,000 different values for each hyperparameter (instead of just a few val‐ ues per hyperparameter with the grid search approach).
+* You have more control over the computing budget you want to allocate to hyper‐ parameter search, simply by setting the number of iterations.
