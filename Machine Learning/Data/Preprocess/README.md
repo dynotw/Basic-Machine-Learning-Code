@@ -622,12 +622,13 @@ cat_encoder.categories_
 
 
 
-### Custom Transformer
+### Custom Transform Method
 
+#### Custom own Transformer
 Although Scikit-Learn provides many useful transformers, we also can write our own custom transformers for cleanup operations or combining specific attributes. All you need is to create a class and implement three methods: ``.fit()`` (returning self), ``.transform()``, and ``.fit_transform()``. You can get the last one for free by simply adding ``TransformerMixin`` as a base class. Also, if you add ``BaseEstimator`` as a base class (and avoid ``*args`` and ``**kargs`` in your constructor) you will get two extra methods (``get_params()`` and ``set_params()``) that will be useful for automatic hyperparameter tuning.
 
 
-Let's create a custom transformer to add extra attributes:
+Let's create a custom transformer to create extra attributes:
 
 
 ```python
@@ -768,3 +769,64 @@ housing_extra_attribs.head()
   </tbody>
 </table>
 </div>
+
+
+
+#### Custom Transformation Pipeline
+
+Sometimes we want to do a series of different transformations on our data orderly, it's very tedious, if we implement these transform one by one. Therefore, we create a Pipeline class instance. **补充：everything is object, even class itself. 类可以是对象，类实例化后的出来的是此类的实例对象。** Then this instance will do these transformation orderly and automatically.
+
+
+Now let's build a pipeline for preprocessing (transforming) on the numerical attributes:
+
+* 1. ``SimpleImputer``, by median
+* 2. ``CombinedAttributesAdder``, which is our custom transformer defined early.
+* 3. ``StanardSclaer``, 注意区分不同的Scaling 技术 like ``MinMaxScaler``, ``Normalizer`` and so on
+
+
+**需要注意Pipeline是对所有feature同时进行处理，如果不同features（columns）需要进行不同的transform，应该选用下面的``ColumnTransformer``**
+因为此Pipeline中的transformation都是针对numerical value，所以num_pipeline只能用于housing_num, which removes text information, instead of housing, which includes text feature, ['ocean_proximity'] 。 （否则就报错了）
+
+```python
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+
+# 'imputer', 'attribs_adder' & 'std_scaler' just names, we can name them whatever we like
+num_pipeline = Pipeline([
+        ('imputer', SimpleImputer(strategy="median")),
+        ('attribs_adder', CombinedAttributesAdder()),
+        ('std_scaler', StandardScaler()),
+    ])
+
+# Same as above, train set: .fit_transform();    validation & test set: .transform() 
+housing_num_tr = num_pipeline.fit_transform(housing_num)
+```
+
+
+#### Custom Column Transformer
+
+Sometimes we need to do different transformation on different features(columns), this time we can use ``ColumnTransformer`` to deal with numerical and text information respectively.
+
+
+
+```python
+from sklearn.compose import ColumnTransformer
+
+# Get the index or column names of features (columns)
+num_attribs = list(housing_num)
+cat_attribs = ["ocean_proximity"]
+
+full_pipeline = ColumnTransformer([
+        # We divide into two parts: numerical information and text information
+        ("num", num_pipeline, num_attribs), # Each tuple has three elements: name, transformer, columns index or name
+        ("cat", OneHotEncoder(), cat_attribs),
+    ])
+
+housing_prepared = full_pipeline.fit_transform(housing)
+
+housing_prepared.shape
+```
+
+
+    (16512, 16)
+
