@@ -1,7 +1,6 @@
 # Data Preview 
 
-**Once we get our data, we can preview data firstly to have a big picture of our data, which is helpful for the following steps.**
-**Assuming that our data is stored in pandas Dataframe format, and the following code is based on it.**
+Once we get our data, we can preview data firstly to have a big picture of our data, which is helpful for the following steps. Assuming that our data is stored in **Pandas Dataframe format**, and the following code is based on it.
 
 
 &nbsp;
