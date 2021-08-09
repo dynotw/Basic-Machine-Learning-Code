@@ -1,7 +1,6 @@
 ## Data Precessing
 
-**Once we know our data briefly, we can preprocess our data, which may fast our training, improve model performance and so on**
-**Assuming that our data is stored in pandas Dataframe format, and the following code is based on it.**
+Once we know our data briefly, we can preprocess our data, which may fast our training, improve model performance and so onAssuming that our data is stored in **Pandas Dataframe format**, and the following code is based on it.
 
 
 
