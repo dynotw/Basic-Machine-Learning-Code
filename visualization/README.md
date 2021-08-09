@@ -1,11 +1,3 @@
-
-```python
-def plot_digit(data):
-    image = data.reshape(28, 28)
-    plt.imshow(image, cmap = mpl.cm.binary,
-               interpolation="nearest")
-    plt.axis("off")
-```
 ## Visualization
 
 After we have our data or result, sometimes we need to visualize them to have a direct view.
